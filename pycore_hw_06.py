@@ -3,10 +3,19 @@ from collections import UserDict
 
 class Field:
     def __init__(self, value):
+        self.__value = None
         self.value = value
 
+    @property
+    def value(self):
+        return self.__value
+
+    @value.setter
+    def value(self, value):
+        self.__value = value
+
     def __str__(self):
-        return str(self.value)
+        return str(self.__value)
 
 
 class Name(Field):
@@ -16,8 +25,12 @@ class Name(Field):
 
 class Phone(Field):
     def __init__(self, phone):
-        if len(phone) == 10:
-            super().__init__(phone)
+        self.value = phone
+
+    @Field.value.setter
+    def value(self, value):
+        if len(value) == 10:
+            Field.value.__set__(self, value)
         else:
             raise ValueError(f'Телефон має містити 10 цифр')
 
