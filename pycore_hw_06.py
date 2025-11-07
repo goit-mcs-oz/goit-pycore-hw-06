@@ -1,4 +1,5 @@
 from collections import UserDict
+import re
 
 
 class Field:
@@ -25,11 +26,17 @@ class Name(Field):
 
 class Phone(Field):
     def __init__(self, phone):
-        self.value = phone
+        if self.__is_valid(phone):
+            super().__init__(phone)
+        else:
+            raise ValueError(f'Телефон має містити 10 цифр')
+
+    def __is_valid(self, phone):
+        return bool(re.fullmatch(r'^\d{10}$', phone))
 
     @Field.value.setter
     def value(self, value):
-        if len(value) == 10:
+        if self.__is_valid(value):
             Field.value.__set__(self, value)
         else:
             raise ValueError(f'Телефон має містити 10 цифр')
