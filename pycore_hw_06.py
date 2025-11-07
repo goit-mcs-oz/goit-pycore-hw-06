@@ -26,17 +26,17 @@ class Name(Field):
 
 class Phone(Field):
     def __init__(self, phone):
-        if self.__is_valid(phone):
+        if self.__is_valid_phone(phone):
             super().__init__(phone)
         else:
             raise ValueError(f'Телефон має містити 10 цифр')
 
-    def __is_valid(self, phone):
+    def __is_valid_phone(self, phone):
         return bool(re.fullmatch(r'^\d{10}$', phone))
 
     @Field.value.setter
     def value(self, value):
-        if self.__is_valid(value):
+        if self.__is_valid_phone(value):
             Field.value.__set__(self, value)
         else:
             raise ValueError(f'Телефон має містити 10 цифр')
